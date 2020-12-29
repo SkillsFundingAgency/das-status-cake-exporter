@@ -48,7 +48,7 @@ spec:
         agentpool: monitoring01
       containers:
       - name: status-cake-exporter
-        image: apprenticeshipsdevops/das-status-cake-exporter:{{buildNumber}}
+        image: apprenticeshipsdevops/das-status-cake-exporter:__buildNumber__
         ports:
         - containerPort: 8000
         env:
