@@ -19,9 +19,9 @@ jobs:
         - checkout: self
           path: 'das-status-cake-exporter/'
         - task: replacetokens@3
-          displayName: 'Replace tokens in ${{parameters.sourcePath}}'
+          displayName: 'Replace tokens in $(Pipeline.Workspace)/das-status-cake-exporter/manifests'
           inputs:
-            rootDirectory: '${{parameters.sourcePath}}'
+            rootDirectory: '$(Pipeline.Workspace)/das-status-cake-exporter/manifests'
             targetFiles: '*.yml'
             encoding: 'auto'
             writeBOM: true
