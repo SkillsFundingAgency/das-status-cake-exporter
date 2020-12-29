@@ -27,8 +27,8 @@ variables:
 
 stages:
   - template: /pipeline-templates/stage/build.yml
-  - stage: DeployTo_DEV
-    displayName: DeployTo_DEV
+
+  - stage: Deploy_Dev
     variables:
     - group: Dev Management Resources
     jobs:
@@ -38,4 +38,17 @@ stages:
         AksResourceGroupName: $(AKSResourceGroupName)
         AzureServiceConnection: SFA-DAS-DevTest-ARM
         Environment: DEV
+        KubectlVersion: $(KubectlVersion)
+
+  - stage: Deploy_Prod
+    dependsOn: Deploy_Dev
+    variables:
+    - group: Prod Management Resources
+    jobs:
+    - template: /pipeline-templates/job/deploy.yml
+      parameters:
+        AksClusterName: $(AKSSharedClusterName)
+        AksResourceGroupName: $(AKSResourceGroupName)
+        AzureServiceConnection: SFA-DIG-Prod-ARM
+        Environment: PROD
         KubectlVersion: $(KubectlVersion)
