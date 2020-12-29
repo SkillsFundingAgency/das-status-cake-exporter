@@ -35,7 +35,7 @@ stages:
     - template: /pipeline-templates/job/deploy.yml
       parameters:
         AksClusterName: $(AKSSharedClusterName)
-        AksResourceGroup: $(AKSResourceGroupName)
+        AksResourceGroupName: $(AKSResourceGroupName)
         AzureServiceConnection: SFA-DAS-DevTest-ARM
         Environment: DEV
         KubectlVersion: $(KubectlVersion)
