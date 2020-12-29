@@ -1,0 +1,39 @@
+parameters:
+  AksClusterName:
+  AksResourceGroupName:
+  AzureServiceConnection:
+  Environment:
+  KubectlVersion:
+  DependsOn: []
+
+jobs:
+- deployment: DeployTo_${{ parameters.Environment }}
+  dependsOn: ${{ parameters.DependsOn }}
+  environment: ${{ parameters.Environment }}
+  pool:
+    name: 'DAS - Continuous Integration'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+          path: 'das-status-cake-exporter/'
+        - task: replacetokens@3
+          displayName: 'Replace tokens in ${{parameters.sourcePath}}'
+          inputs:
+            rootDirectory: '${{parameters.sourcePath}}'
+            targetFiles: '*.yml'
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'fail'
+            keepToken: false
+            tokenPrefix: '__'
+            tokenSuffix: '__'
+        - template: azure-pipelines-templates/deploy/step/kubernetes-apply-manifest.yml@das-platform-building-blocks
+          parameters:
+            AksClusterName: ${{ parameters.AksClusterName }}
+            AksResourceGroupName: ${{ parameters.AksResourceGroupName }}
+            AzureServiceConnection: ${{ parameters.AzureServiceConnection }}
+            KubectlVersion: ${{ parameters.KubectlVersion }}
+            ManifestFile: $(Pipeline.Workspace)/das-status-cake-exporter/manifests/deployment.yml
+            Namespace: monitoring

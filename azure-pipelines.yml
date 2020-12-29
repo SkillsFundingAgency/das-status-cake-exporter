@@ -2,71 +2,40 @@ trigger:
   batch: true
   branches:
     include:
-      - "*"
+      - master
   paths:
     include:
       - exporter/*
+      - pipeline-templates/*
       - azure-pipelines.yml
       - requirements.txt
       - Dockerfile
 
 pr: none
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+resources:
+  repositories:
+  - repository: das-platform-building-blocks
+    type: github
+    name: SkillsFundingAgency/das-platform-building-blocks
+    ref: refs/tags/0.2.21
+    endpoint: SFA
 
 variables:
-  IMAGE_NAME: chelnak/status-cake-exporter
+- name: KubectlVersion
+  value: 1.18.8
 
-steps:
-
-- task: gittools.gitversion-preview.gitversion-task.GitVersion@5
-  displayName: GitVersion
-  inputs:
-    configFilePath: GitVersion.yml
-
-- task: Docker@1
-  displayName: Build image
-  inputs:
-    command: Build an image
-    imageName: $(IMAGE_NAME)
-    dockerFile: Dockerfile
-    addDefaultLabels: false
-
-- task: Docker@1
-  displayName: Tag image with current build number $(Build.BuildNumber)
-  inputs:
-    command: Tag image
-    imageName: $(IMAGE_NAME)
-    arguments: $(IMAGE_NAME):$(Build.BuildNumber)
-
-- task: Docker@1
-  displayName: Docker Hub login
-  inputs:
-    command: login
-    containerregistrytype: Container Registry
-    dockerRegistryEndpoint: Docker Hub
-
-- task: Docker@1
-  displayName: Push tagged image
-  inputs:
-    command: Push an image
-    imageName: $(IMAGE_NAME):$(Build.BuildNumber)
-
-- task: Docker@1
-  displayName: Push tagged image (latest) if master
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    command: Push an image
-    imageName: '$(IMAGE_NAME):latest'
-
-- task: GitHubRelease@0
-  displayName: Create a GitHub GitHubRelease
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    gitHubConnection: 'chelnak'
-    repositoryName: 'chelnak/status-cake-exporter'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'manual'
-    tag: '$(Build.BuildNumber)'
+stages:
+  - template: /pipeline-templates/stage/build.yml
+  - stage: DeployTo_DEV
+    displayName: DeployTo_DEV
+    variables:
+    - group: Dev Management Resources
+    jobs:
+    - template: /pipeline-templates/job/deploy.yml
+      parameters:
+        AksClusterName: $(AKSSharedClusterName)
+        AksResourceGroup: $(AKSResourceGroupName)
+        AzureServiceConnection: SFA-DAS-DevTest-ARM
+        Environment: DEV
+        KubectlVersion: $(KubectlVersion)
