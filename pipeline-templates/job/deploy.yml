@@ -4,11 +4,9 @@ parameters:
   AzureServiceConnection:
   Environment:
   KubectlVersion:
-  DependsOn: []
 
 jobs:
 - deployment: DeployTo_${{ parameters.Environment }}
-  dependsOn: ${{ parameters.DependsOn }}
   environment: ${{ parameters.Environment }}
   pool:
     name: 'DAS - Continuous Integration'
