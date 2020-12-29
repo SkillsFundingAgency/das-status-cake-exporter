@@ -19,8 +19,8 @@ metadata:
   name: status-cake-api-token
 type: generic
 stringData:
-  USERNAME: __StatusCakeUsername__
-  API_KEY: __StatusCakeApiKey__
+  USERNAME: __StatuscakeUsername__
+  API_KEY: __StatuscakeExporterAPIKey__
 
 ---
 apiVersion: apps/v1
