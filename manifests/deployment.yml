@@ -45,7 +45,7 @@ spec:
         app: prometheus-status-cake-exporter
     spec:
       nodeSelector:
-        agentpool: mgmt
+        agentpool: monitoring01
       containers:
       - name: status-cake-exporter
         image: apprenticeshipsdevops/das-status-cake-exporter:{{buildNumber}}
