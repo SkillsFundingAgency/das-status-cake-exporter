@@ -18,7 +18,7 @@ kind: Secret
 metadata:
   name: status-cake-api-token
 type: generic
-data:
+stringData:
   USERNAME: __StatusCakeUsername__
   API_KEY: __StatusCakeApiKey__
 
