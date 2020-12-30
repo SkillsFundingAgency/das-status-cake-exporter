@@ -13,16 +13,6 @@ spec:
     app: prometheus-status-cake-exporter
 
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: status-cake-api-token
-type: generic
-stringData:
-  USERNAME: __StatuscakeUsername__
-  API_KEY: __StatuscakeExporterAPIKey__
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

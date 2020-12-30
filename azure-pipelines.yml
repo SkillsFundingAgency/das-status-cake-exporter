@@ -23,6 +23,8 @@ resources:
 
 variables:
 - group: "Statuscake API"
+- name: AKSNamespace
+  value: monitoring
 - name: KubectlVersion
   value: 1.18.8
 
@@ -35,11 +37,14 @@ stages:
     jobs:
     - template: /pipeline-templates/job/deploy.yml
       parameters:
-        AksClusterName: $(AKSSharedClusterName)
-        AksResourceGroupName: $(AKSResourceGroupName)
+        AKSClusterName: $(AKSSharedClusterName)
+        AKSResourceGroupName: $(AKSResourceGroupName)
+        AKSNamespace: $(AKSNamespace)
         AzureServiceConnection: SFA-DAS-DevTest-ARM
         Environment: DEV
         KubectlVersion: $(KubectlVersion)
+        StatuscakeUsername: $(StatuscakeUsername)
+        StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
 
   - stage: Deploy_Prod
     dependsOn: Deploy_Dev
@@ -48,8 +53,11 @@ stages:
     jobs:
     - template: /pipeline-templates/job/deploy.yml
       parameters:
-        AksClusterName: $(AKSSharedClusterName)
-        AksResourceGroupName: $(AKSResourceGroupName)
+        AKSClusterName: $(AKSSharedClusterName)
+        AKSResourceGroupName: $(AKSResourceGroupName)
+        AKSNamespace: $(AKSNamespace)
         AzureServiceConnection: SFA-DIG-Prod-ARM
         Environment: PROD
         KubectlVersion: $(KubectlVersion)
+        StatuscakeUsername: $(StatuscakeUsername)
+        StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
