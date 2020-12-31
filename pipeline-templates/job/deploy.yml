@@ -27,6 +27,7 @@ jobs:
             keepToken: false
             tokenPrefix: '__'
             tokenSuffix: '__'
+            verbosity: detailed
         - template: azure-pipelines-templates/deploy/step/kubernetes-apply-manifest.yml@das-platform-building-blocks
           parameters:
             AksClusterName: ${{ parameters.AksClusterName }}
