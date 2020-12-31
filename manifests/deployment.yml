@@ -13,16 +13,6 @@ spec:
     app: prometheus-status-cake-exporter
 
 ---
-apiVersion: v1
-kind: Secret
-metadata:
-  name: status-cake-api-token
-type: Opaque
-stringData:
-  USERNAME: __StatuscakeUsername__
-  API_KEY: __StatuscakeExporterAPIKey__
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,17 +43,9 @@ spec:
         - containerPort: 8000
         env:
         - name: USERNAME
-          valueFrom:
-            secretKeyRef:
-              name: status-cake-api-token
-              key: USERNAME
+          value: __StatuscakeUsername__
         - name: API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: status-cake-api-token
-              key: API_KEY
-        - name: TAGS
-          value: "DAS"
+          value: __StatuscakeExporterAPIKey__
 
 ---
 apiVersion: monitoring.coreos.com/v1
