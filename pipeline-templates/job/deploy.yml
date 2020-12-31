@@ -28,6 +28,10 @@ jobs:
             tokenPrefix: '__'
             tokenSuffix: '__'
             verbosity: detailed
+        - task: KubectlInstaller@0
+          displayName: 'Install Kubectl 1.18.8'
+          inputs:
+            kubectlVersion: 1.18.8
         - task: Kubernetes@1
           displayName: 'Create Deployment'
           inputs:
