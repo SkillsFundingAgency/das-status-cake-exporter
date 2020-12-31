@@ -40,9 +40,9 @@ jobs:
             connectionType: Azure Resource Manager
             kubernetesCluster: ${{ parameters.AksClusterName }}
             namespace: monitoring
+            command: apply
             useConfigurationFile: true
             configuration: $(Pipeline.Workspace)/das-status-cake-exporter/manifests/config-secrets.yml
-            secretType: generic
             useClusterAdmin: true
         - task: Kubernetes@1
           displayName: 'Create Deployment'
