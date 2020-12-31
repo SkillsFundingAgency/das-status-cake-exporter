@@ -42,5 +42,17 @@ jobs:
             namespace: monitoring
             command: apply
             useConfigurationFile: true
+            configuration: $(Pipeline.Workspace)/das-status-cake-exporter/manifests/config-secrets.yml
+            useClusterAdmin: true
+        - task: Kubernetes@1
+          displayName: 'Create Deployment'
+          inputs:
+            azureSubscriptionEndpoint: ${{ parameters.AzureServiceConnection }}
+            azureResourceGroup: ${{ parameters.AksResourceGroupName }}
+            connectionType: Azure Resource Manager
+            kubernetesCluster: ${{ parameters.AksClusterName }}
+            namespace: monitoring
+            command: apply
+            useConfigurationFile: true
             configuration: $(Pipeline.Workspace)/das-status-cake-exporter/manifests/deployment.yml
             useClusterAdmin: true

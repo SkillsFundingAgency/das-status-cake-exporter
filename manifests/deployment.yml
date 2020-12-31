@@ -43,9 +43,17 @@ spec:
         - containerPort: 8000
         env:
         - name: USERNAME
-          value: __StatuscakeUsername__
+          valueFrom:
+            secretKeyRef:
+              name: status-cake-api-token
+              key: USERNAME
         - name: API_KEY
-          value: __StatuscakeExporterAPIKey__
+          valueFrom:
+            secretKeyRef:
+              name: status-cake-api-token
+              key: API_KEY
+        - name: TAGS
+          value: "DAS"
 
 ---
 apiVersion: monitoring.coreos.com/v1
