@@ -2,71 +2,62 @@ trigger:
   batch: true
   branches:
     include:
-      - "*"
+      - master
   paths:
     include:
       - exporter/*
+      - pipeline-templates/*
       - azure-pipelines.yml
       - requirements.txt
       - Dockerfile
 
 pr: none
 
-pool:
-  vmImage: 'Ubuntu-16.04'
+resources:
+  repositories:
+  - repository: das-platform-building-blocks
+    type: github
+    name: SkillsFundingAgency/das-platform-building-blocks
+    ref: refs/tags/0.2.21
+    endpoint: SFA
 
 variables:
-  IMAGE_NAME: chelnak/status-cake-exporter
+- group: "Statuscake API"
+- name: AKSNamespace
+  value: monitoring
+- name: KubectlVersion
+  value: 1.18.8
 
-steps:
+stages:
+  - template: /pipeline-templates/stage/build.yml
 
-- task: gittools.gitversion-preview.gitversion-task.GitVersion@5
-  displayName: GitVersion
-  inputs:
-    configFilePath: GitVersion.yml
+  - stage: Deploy_Dev
+    variables:
+    - group: Dev Management Resources
+    jobs:
+    - template: /pipeline-templates/job/deploy.yml
+      parameters:
+        AKSClusterName: $(AKSSharedClusterName)
+        AKSResourceGroupName: $(AKSResourceGroupName)
+        AKSNamespace: $(AKSNamespace)
+        AzureServiceConnection: SFA-DAS-DevTest-ARM
+        Environment: DEV
+        KubectlVersion: $(KubectlVersion)
+        StatuscakeUsername: $(StatuscakeUsername)
+        StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
 
-- task: Docker@1
-  displayName: Build image
-  inputs:
-    command: Build an image
-    imageName: $(IMAGE_NAME)
-    dockerFile: Dockerfile
-    addDefaultLabels: false
-
-- task: Docker@1
-  displayName: Tag image with current build number $(Build.BuildNumber)
-  inputs:
-    command: Tag image
-    imageName: $(IMAGE_NAME)
-    arguments: $(IMAGE_NAME):$(Build.BuildNumber)
-
-- task: Docker@1
-  displayName: Docker Hub login
-  inputs:
-    command: login
-    containerregistrytype: Container Registry
-    dockerRegistryEndpoint: Docker Hub
-
-- task: Docker@1
-  displayName: Push tagged image
-  inputs:
-    command: Push an image
-    imageName: $(IMAGE_NAME):$(Build.BuildNumber)
-
-- task: Docker@1
-  displayName: Push tagged image (latest) if master
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    command: Push an image
-    imageName: '$(IMAGE_NAME):latest'
-
-- task: GitHubRelease@0
-  displayName: Create a GitHub GitHubRelease
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-  inputs:
-    gitHubConnection: 'chelnak'
-    repositoryName: 'chelnak/status-cake-exporter'
-    action: 'create'
-    target: '$(Build.SourceVersion)'
-    tagSource: 'manual'
-    tag: '$(Build.BuildNumber)'
+  - stage: Deploy_Prod
+    dependsOn: Deploy_Dev
+    variables:
+    - group: Prod Management Resources
+    jobs:
+    - template: /pipeline-templates/job/deploy.yml
+      parameters:
+        AKSClusterName: $(AKSSharedClusterName)
+        AKSResourceGroupName: $(AKSResourceGroupName)
+        AKSNamespace: $(AKSNamespace)
+        AzureServiceConnection: SFA-DIG-Prod-ARM
+        Environment: PROD
+        KubectlVersion: $(KubectlVersion)
+        StatuscakeUsername: $(StatuscakeUsername)
+        StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
