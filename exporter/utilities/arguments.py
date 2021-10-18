@@ -10,13 +10,17 @@ def get_args():
     parser.add("--use_v1_uptime_endpoints",
                dest="use_v1_uptime_endpoints",
                env_var="USE_V1_UPTIME_ENDPOINTS",
-               default="False",
+               default="false",
+               type=str.lower,
+               choices={'false', 'f', '0', 'off', 'no', 'n', 'off', 'true', 't', '1', 'on', 'yes', 'y', 't', 'true', 'on'},
                help='Boolean format string for using the uptime endpoints of the v1 API: https://www.statuscake.com/api/v1/#operation/list-uptime-tests')
 
     parser.add("--use_v1_maintenance_windows_endpoints",
                dest="use_v1_maintenance_windows_endpoints",
                env_var="USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS",
-               default="False",
+               default="false",
+               type=str.lower,
+               choices={'false', 'f', '0', 'off', 'no', 'n', 'off', 'true', 't', '1', 'on', 'yes', 'y', 't', 'true', 'on'},
                help='Boolean format string for using the maintenance windows endpoints of the v1 API: https://www.statuscake.com/api/v1/#operation/list-maintenance-windows')
                
     parser.add("--username",
