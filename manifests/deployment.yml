@@ -42,6 +42,10 @@ spec:
         ports:
         - containerPort: 8000
         env:
+        - name: USE_V1_UPTIME_ENDPOINTS
+          value: "__StatuscakeUseV1UptimeEndpoints__"
+        - name: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS
+          value: "__StatuscakeUseV1MaintenanceWindowsEndpoints__"
         - name: USERNAME
           valueFrom:
             secretKeyRef:

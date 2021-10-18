@@ -3,27 +3,42 @@
 import sys
 import logging
 from prometheus_client.core import GaugeMetricFamily
+from setuptools import distutils
 from status_cake_client import tests as t
 from status_cake_client import maintenance as m
 
 logger = logging.getLogger("test_collector")
 
 
-def parse_test_response(r, m):
+def parse_test_response(use_v1_uptime_endpoints, r, m):
     t = []
-    tests = r.json()['data']
-    for i in tests:
-        t.append(
-            {
-                "test_id": str(i['TestID']),
-                "test_type": i['TestType'],
-                "test_name": i['WebsiteName'],
-                "test_url": i['WebsiteURL'],
-                "test_status_int": str(1 if (i["Status"] == "Up") else 0),
-                "test_uptime_percent": str(i['Uptime']),
-                "maintenance_status_int": str(1 if (str(i["TestID"])) in m else 0)
-            }
-        )
+    tests = r
+    if use_v1_uptime_endpoints:
+        for i in tests:
+            t.append(
+                {
+                    "test_id": str(i['id']),
+                    "test_type": i['test_type'],
+                    "test_name": i['name'],
+                    "test_url": i['website_url'],
+                    "test_status_int": str(1 if (i["status"] == "up") else 0),
+                    "test_uptime_percent": str(i['uptime']),
+                    "maintenance_status_int": str(1 if (str(i["id"])) in m else 0)
+                }
+            )
+    else:
+        for i in tests:
+            t.append(
+                {
+                    "test_id": str(i['TestID']),
+                    "test_type": i['TestType'],
+                    "test_name": i['WebsiteName'],
+                    "test_url": i['WebsiteURL'],
+                    "test_status_int": str(1 if (i["Status"] == "Up") else 0),
+                    "test_uptime_percent": str(i['Uptime']),
+                    "maintenance_status_int": str(1 if (str(i["TestID"])) in m else 0)
+                }
+            )
 
     return t
 
@@ -47,7 +62,9 @@ def parse_test_details_response(r):
 
 class TestCollector(object):
 
-    def __init__(self, username, api_key, tags):
+    def __init__(self, use_v1_uptime_endpoints, use_v1_maintenance_windows_endpoints, username, api_key, tags):
+        self.use_v1_uptime_endpoints = bool(distutils.util.strtobool(use_v1_uptime_endpoints))
+        self.use_v1_maintenance_windows_endpoints = bool(distutils.util.strtobool(use_v1_maintenance_windows_endpoints))
         self.username = username
         self.api_key = api_key
         self.tags = tags
@@ -58,13 +75,16 @@ class TestCollector(object):
 
         try:
 
-            maintenance = m.get_maintenance(self.api_key, self.username)
+            maintenance = m.get_maintenance(self.use_v1_maintenance_windows_endpoints, self.api_key, self.username)
             #Grab the test_ids from the response
-            m_test_id_list = [i['all_tests'] for i in maintenance.json()['data']]
+            if self.use_v1_maintenance_windows_endpoints:
+                m_test_id_list = [i['tests'] for i in maintenance.json()['data']]
+            else:
+                m_test_id_list = [i['all_tests'] for i in maintenance.json()['data']]
             #Flatten the test_ids into a list
             m_test_id_flat_list = [item for sublist in m_test_id_list for item in sublist]
-            tests = t.get_tests(self.api_key, self.username, self.tags)
-            parsed_tests = parse_test_response(tests, m_test_id_flat_list)
+            tests = t.get_tests(self.use_v1_uptime_endpoints, self.api_key, self.username, self.tags)
+            parsed_tests = parse_test_response(self.use_v1_uptime_endpoints, tests, m_test_id_flat_list)
 
             # status_cake_test_info - gauge
             label_names = parsed_tests[0].keys()
