@@ -62,7 +62,7 @@ The new `Get all uptime tests` endpoint https://www.statuscake.com/api/v1/#opera
 Environment variables `USE_V1_UPTIME_ENDPOINTS` and `USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS` are used to enable use of the v1 API.
 
 ### Maintenance Windows endpoints
-Endpoints of the new v1 API can be used are available to be used by all accounts with the exception of the maintenance windows endpoints, from https://www.statuscake.com/api/v1/#tag/uptime:
+Endpoints of the new v1 API are available to be used by all accounts with the exception of the maintenance windows endpoints, from https://www.statuscake.com/api/v1/#tag/uptime:
 >NOTE: the API endpoints concerned with maintenance windows will only work with accounts registed to use the newer version of maintenance windows. This version of maintenance windows is incompatible with the original version and all existing windows will require migrating to be further used. Presently a tool to automate the migration of maintenance windows is under development.
 
 Similarly, if an account is registered to use the newer version of maintenance windows, the legacy API's maintenance windows endpoints cannot be used.
