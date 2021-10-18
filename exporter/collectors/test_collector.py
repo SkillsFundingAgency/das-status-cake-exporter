@@ -3,6 +3,7 @@
 import sys
 import logging
 from prometheus_client.core import GaugeMetricFamily
+from setuptools import distutils
 from status_cake_client import tests as t
 from status_cake_client import maintenance as m
 
@@ -62,8 +63,8 @@ def parse_test_details_response(r):
 class TestCollector(object):
 
     def __init__(self, use_v1_uptime_endpoints, use_v1_maintenance_windows_endpoints, username, api_key, tags):
-        self.use_v1_uptime_endpoints = use_v1_uptime_endpoints
-        self.use_v1_maintenance_windows_endpoints = use_v1_maintenance_windows_endpoints
+        self.use_v1_uptime_endpoints = bool(distutils.util.strtobool(use_v1_uptime_endpoints))
+        self.use_v1_maintenance_windows_endpoints = bool(distutils.util.strtobool(use_v1_maintenance_windows_endpoints))
         self.username = username
         self.api_key = api_key
         self.tags = tags

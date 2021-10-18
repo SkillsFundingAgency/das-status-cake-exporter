@@ -5,8 +5,6 @@ parameters:
   AzureServiceConnection:
   Environment:
   KubectlVersion:
-  StatuscakeUseV1UptimeEndpoints:
-  StatuscakeUseV1MaintenanceWindowsEndpoints:
   StatusCakeUsername:
   StatuscakeExporterAPIKey:
 
@@ -31,7 +29,7 @@ jobs:
             useClusterAdmin: true
             namespace: ${{ parameters.AKSNamespace }}
             secretType: generic
-            secretArguments: --from-literal=USE_V1_UPTIME_ENDPOINTS=${{ parameters.StatuscakeUseV1UptimeEndpoints }} --from-literal=USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS=${{ parameters.StatuscakeUseV1MaintenanceWindowsEndpoints }} --from-literal=USERNAME=${{ parameters.StatuscakeUsername }} --from-literal=API_KEY=${{ parameters.StatuscakeExporterAPIKey }}
+            secretArguments: --from-literal=USERNAME=${{ parameters.StatuscakeUsername }} --from-literal=API_KEY=${{ parameters.StatuscakeExporterAPIKey }}
             secretName: status-cake-api-token
         - task: replacetokens@3
           displayName: 'Replace tokens in $(Pipeline.Workspace)/das-status-cake-exporter/manifests'

@@ -45,13 +45,13 @@ If an arg is specified in more than one place, then commandline values
 override environment variables which override defaults.
 
 optional arguments:
-  -h, --help                                                                    show this help message and exit
-  --use_v1_uptime_endpoints USE_V1_UPTIME_ENDPOINTS                             Boolean for using v1 uptime endpoints [env var: USE_V1_UPTIME_ENDPOINTS]
-  --use_v1_maintenance_windows_endpoints USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS   Boolean for using v1 maintenance windows endpoints [env var: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS]
-  --username USERNAME                                                           Username for the account [env var: USERNAME]
-  --api-key API_KEY                                                             API key for the account [env var: API_KEY]
-  --tests.tags TAGS                                                             A comma separated list of tags used to filter tests returned from the api [env var: TAGS]
-  --logging.level                                                               {debug,info,warn,error} Set a log level for the application [env var: LOG_LEVEL]
+  -h, --help                                    show this help message and exit
+  --use_v1_uptime_endpoints true                Boolean for using v1 uptime endpoints [env var: USE_V1_UPTIME_ENDPOINTS]
+  --use_v1_maintenance_windows_endpoints true   Boolean for using v1 maintenance windows endpoints [env var: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS]
+  --username USERNAME                           Username for the account [env var: USERNAME]
+  --api-key API_KEY                             API key for the account [env var: API_KEY]
+  --tests.tags TAGS                             A comma separated list of tags used to filter tests returned from the api [env var: TAGS]
+  --logging.level {debug,info,warn,error}       Set a log level for the application [env var: LOG_LEVEL]
 ```       
 
 ## V1 API
