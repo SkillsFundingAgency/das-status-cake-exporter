@@ -8,6 +8,7 @@ import logging
 from prometheus_client import start_http_server, REGISTRY
 from collectors import test_collector
 from utilities import logs, arguments
+from setuptools import distutils
 
 
 if __name__ == "__main__":
@@ -24,7 +25,7 @@ if __name__ == "__main__":
 
         logger.info("Registering collectors")
         REGISTRY.register(test_collector.TestCollector(
-            args.username, args.api_key, args.tags))
+            bool(distutils.util.strtobool(args.use_v1_uptime_endpoints)), bool(distutils.util.strtobool(args.use_v1_maintenance_windows_endpoints)), args.username, args.api_key, args.tags))
 
         while True:
             time.sleep(1)

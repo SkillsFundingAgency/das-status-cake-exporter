@@ -42,6 +42,16 @@ spec:
         ports:
         - containerPort: 8000
         env:
+        - name: USE_V1_UPTIME_ENDPOINTS
+          valueFrom:
+            secretKeyRef:
+              name: status-cake-api-token
+              key: USE_V1_UPTIME_ENDPOINTS
+        - name: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS
+          valueFrom:
+            secretKeyRef:
+              name: status-cake-api-token
+              key: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS
         - name: USERNAME
           valueFrom:
             secretKeyRef:

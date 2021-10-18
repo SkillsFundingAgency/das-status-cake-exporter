@@ -14,12 +14,14 @@ http://status-cake-exporter.default.svc:8080
 
 ## Usage
 
-| Setting  | Required | Default |
-|----------|----------|---------|
-| USERNAME | Yes      | Null    | 
-| API_KEY  | Yes      | Null    |
-| TAGS     | No       | Null    |
-| LOG_LEVEL| No       | info    | 
+| Setting                              | Required | Default |
+|--------------------------------------|----------|---------|
+| USE_V1_UPTIME_ENDPOINTS              | No       | False   | 
+| USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS | No       | False   | 
+| USERNAME                             | Yes      | Null    | 
+| API_KEY                              | Yes      | Null    |
+| TAGS                                 | No       | Null    |
+| LOG_LEVEL                            | No       | info    | 
 
 ### Docker
 
@@ -43,12 +45,23 @@ If an arg is specified in more than one place, then commandline values
 override environment variables which override defaults.
 
 optional arguments:
-  -h, --help            show this help message and exit
-  --username USERNAME   Username for the account [env var: USERNAME]
-  --api-key API_KEY     API key for the account [env var: API_KEY]
-  --tests.tags TAGS     A comma separated list of tags used to filter tests returned from the api [env var: TAGS]
-  --logging.level       {debug,info,warn,error} Set a log level for the application [env var: LOG_LEVEL]
-```                    
+  -h, --help                                                                    show this help message and exit
+  --use_v1_uptime_endpoints USE_V1_UPTIME_ENDPOINTS                             Boolean for using v1 uptime endpoints [env var: USE_V1_UPTIME_ENDPOINTS]
+  --use_v1_maintenance_windows_endpoints USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS   Boolean for using v1 maintenance windows endpoints [env var: USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS]
+  --username USERNAME                                                           Username for the account [env var: USERNAME]
+  --api-key API_KEY                                                             API key for the account [env var: API_KEY]
+  --tests.tags TAGS                                                             A comma separated list of tags used to filter tests returned from the api [env var: TAGS]
+  --logging.level                                                               {debug,info,warn,error} Set a log level for the application [env var: LOG_LEVEL]
+```       
+
+## V1 API
+StatusCake have a new API with documents available at https://www.statuscake.com/api/v1/, deprecating the legacy API https://www.statuscake.com/api/.
+
+### Maintenance Windows endpoints
+Endpoints of the new v1 API can be used are available to be used by all accounts with the exception of the maintenance windows endpoints, from https://www.statuscake.com/api/v1/#tag/uptime:
+>NOTE: the API endpoints concerned with maintenance windows will only work with accounts registed to use the newer version of maintenance windows. This version of maintenance windows is incompatible with the original version and all existing windows will require migrating to be further used. Presently a tool to automate the migration of maintenance windows is under development.
+
+The use of the maintenance windows endpoints is set by the USE_V1_MAINTENANCE_WINDOWS_ENDPOINTS environment variable.
 
 ## Metrics
 

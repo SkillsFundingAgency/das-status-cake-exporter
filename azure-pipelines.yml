@@ -43,6 +43,8 @@ stages:
         AzureServiceConnection: SFA-DAS-DevTest-ARM
         Environment: DEV
         KubectlVersion: $(KubectlVersion)
+        StatuscakeUseV1UptimeEndpoints: $(StatuscakeUseV1UptimeEndpoints)
+        StatuscakeUseV1MaintenanceWindowsEndpoints: $(StatuscakeUseV1MaintenanceWindowsEndpoints)
         StatuscakeUsername: $(StatuscakeUsername)
         StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
 
@@ -59,5 +61,7 @@ stages:
         AzureServiceConnection: SFA-DIG-Prod-ARM
         Environment: PROD
         KubectlVersion: $(KubectlVersion)
+        StatuscakeUseV1UptimeEndpoints: $(StatuscakeUseV1UptimeEndpoints)
+        StatuscakeUseV1MaintenanceWindowsEndpoints: $(StatuscakeUseV1MaintenanceWindowsEndpoints)
         StatuscakeUsername: $(StatuscakeUsername)
         StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
