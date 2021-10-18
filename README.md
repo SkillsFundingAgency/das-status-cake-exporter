@@ -55,7 +55,7 @@ optional arguments:
 ```       
 
 ## V1 API
-StatusCake have a new v1 API with documents available at https://www.statuscake.com/api/v1/, deprecating the legacy API https://www.statuscake.com/api/.
+StatusCake have a new v1 API with documentation available at https://www.statuscake.com/api/v1/, deprecating the legacy API https://www.statuscake.com/api/.
 
 The new `Get all uptime tests` endpoint https://www.statuscake.com/api/v1/#operation/list-uptime-tests provides paged responses to get all tests, overcoming the limit of only 100 tests in the response from the legacy API https://www.statuscake.com/api/Tests/Get%20All%20Tests.md
 
