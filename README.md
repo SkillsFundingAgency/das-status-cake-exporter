@@ -1,4 +1,4 @@
-[![Build Status](https://craigg.visualstudio.com/Pipelines/_apis/build/status/status-cake-exporter?branchName=master)](https://craigg.visualstudio.com/Pipelines/_build/latest?definitionId=19&branchName=master)
+[![Build Status](https://dev.azure.com/sfa-gov-uk/Apprenticeships%20Service%20Cloud%20Platform/_apis/build/status/das-kubernetes/das-status-cake-exporter?repoName=SkillsFundingAgency%2Fdas-status-cake-exporter&branchName=master)](https://dev.azure.com/sfa-gov-uk/Apprenticeships%20Service%20Cloud%20Platform/_build/latest?definitionId=2329&repoName=SkillsFundingAgency%2Fdas-status-cake-exporter&branchName=master)
 
 
 
