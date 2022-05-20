@@ -18,11 +18,12 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.2.21
+    ref: refs/tags/0.4.50
     endpoint: SFA
 
 variables:
-- group: "Statuscake API"
+- group: Release Management Resources
+- group: Statuscake API
 - name: AKSNamespace
   value: monitoring
 - name: KubectlVersion
@@ -30,6 +31,8 @@ variables:
 
 stages:
   - template: /pipeline-templates/stage/build.yml
+    parameters:
+      ServiceConnection: SFA-DIG-Prod-ARM
 
   - stage: Deploy_Dev
     variables:
