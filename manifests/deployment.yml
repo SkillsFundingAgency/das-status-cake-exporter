@@ -38,7 +38,7 @@ spec:
         agentpool: monitoring01
       containers:
       - name: status-cake-exporter
-        image: apprenticeshipsdevops/das-status-cake-exporter:__Build.BuildNumber__
+        image: __PublicAcrName__.azurecr.io/das-status-cake-exporter:__Build.BuildNumber__
         ports:
         - containerPort: 8000
         env:
