@@ -17,3 +17,4 @@ stages:
           ContainerRegistryName: $(PublicAcrName)
           ServiceConnection: ${{ parameters.ServiceConnection }}
           ImageName: das-status-cake-exporter
+          BranchToCreateLatestTag: master
