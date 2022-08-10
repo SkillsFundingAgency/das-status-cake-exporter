@@ -16,7 +16,7 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.4.63
+    ref: refs/tags/0.4.73
     endpoint: SFA
 
 variables:
@@ -25,24 +25,24 @@ variables:
 - name: AKSNamespace
   value: monitoring
 - name: KubectlVersion
-  value: 1.18.8
+  value: 1.23.8
 
 stages:
   - template: /pipeline-templates/stage/build.yml
     parameters:
       ServiceConnection: SFA-DIG-Prod-ARM
 
-  - stage: Deploy_Dev
+  - stage: Deploy_PreProd
     variables:
-    - group: Dev Management Resources
+    - group: PreProd Management Resources
     jobs:
     - template: /pipeline-templates/job/deploy.yml
       parameters:
         AKSClusterName: $(AKSSharedClusterName)
         AKSResourceGroupName: $(AKSResourceGroupName)
         AKSNamespace: $(AKSNamespace)
-        AzureServiceConnection: SFA-DAS-DevTest-ARM
-        Environment: DEV
+        AzureServiceConnection: SFA-DIG-PreProd-ARM
+        Environment: PREPROD
         KubectlVersion: $(KubectlVersion)
         StatuscakeUsername: $(StatuscakeUsername)
         StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
