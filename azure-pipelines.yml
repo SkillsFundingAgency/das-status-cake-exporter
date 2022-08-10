@@ -48,7 +48,7 @@ stages:
         StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
 
   - stage: Deploy_Prod
-    dependsOn: Deploy_Dev
+    dependsOn: Deploy_PreProd
     variables:
     - group: Prod Management Resources
     jobs:
