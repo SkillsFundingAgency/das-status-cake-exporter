@@ -48,6 +48,7 @@ stages:
         StatuscakeExporterAPIKey: $(StatuscakeExporterAPIKey)
 
   - stage: Deploy_Prod
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual')))
     dependsOn: Deploy_PreProd
     variables:
     - group: Prod Management Resources
