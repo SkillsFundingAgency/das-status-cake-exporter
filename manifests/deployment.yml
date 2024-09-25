@@ -35,7 +35,7 @@ spec:
         app: prometheus-status-cake-exporter
     spec:
       nodeSelector:
-        agentpool: monitoring01
+        agentpool: __monitoringAgentName__
       containers:
       - name: status-cake-exporter
         image: __PublicAcrName__.azurecr.io/das-status-cake-exporter:__Build.BuildNumber__
